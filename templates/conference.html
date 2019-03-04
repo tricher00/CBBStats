@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+{% load format_school %}
+{% load format_conference %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ conference.name|format_conference }}</title>
+  </head>
+  <body>
+    <h1>{{ conference.name|format_conference }}</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>School</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Conf. Wins</th>
+                <th>Conf. Losses</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team in teams %}
+                <tr>
+                    <td><a href="../schools/{{team.name}}">{{team.name|format_school}}</a></td>
+                    <td>{{ team.wins }}</td>
+                    <td>{{ team.losses }}</td>
+                    <td>{{ team.conf_wins }}</td>
+                    <td>{{ team.conf_losses }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+  </body>
+</html>
