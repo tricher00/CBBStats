@@ -2,7 +2,10 @@ import requests
 import re
 from bs4 import BeautifulSoup
 import pandas as pd
-from scripts.Objects import *
+try:
+    from scripts.Objects import *
+except:
+    from Objects import *
 
 def getGames(date):
     log = open("log.txt", "w")
@@ -20,13 +23,13 @@ def getGames(date):
         awayTag = teams[0]
         homeTag = teams[1]
         try:
-            homeLink = homeTag['href'].encode('utf-8')
+            homeLink = homeTag['href']
             search = re.search(regex, homeLink)
             home = Team(search.group(1))
         except:
             home = Team(homeTag.get_text().replace(' ', '-').lower())
         try:
-            awayLink = awayTag['href'].encode('utf-8')
+            awayLink = awayTag['href']
             search = re.search(regex, awayLink)
             away = Team(search.group(1))
         except:

@@ -3,8 +3,8 @@ import requests
 import re
 import pandas as pd
 import datetime
-from scripts.Objects import *
-from scripts.SQLFunctions import *
+from Objects import *
+from SQLFunctions import *
 
 def parseArgs():
     parser = argparse.ArgumentParser()
@@ -24,14 +24,14 @@ def getGames(date):
         winnerTag = game.find('tr', class_= 'winner').find_all('a')
         loserTag = game.find('tr', class_= 'loser').find_all('a')
         try:
-            winnerLink = winnerTag[0]['href'].encode('utf-8')
+            winnerLink = winnerTag[0]['href']
             search = re.search(regex, winnerLink)
             winner = Team(search.group(1))
         except:
             winner = Team(winnerTag[0].get_text().replace(' ', '-').lower())
   
         try:
-            loserLink = loserTag[0]['href'].encode('utf-8')
+            loserLink = loserTag[0]['href']
             search = re.search(regex, loserLink)
             loser = Team(search.group(1))
         except:
@@ -43,11 +43,11 @@ def getGames(date):
         if '--' in winner.name: winner.name = winner.name.replace('--', '-')
         if '--' in loser.name: loser.name = loser.name.replace('--', '-')
         if len(winnerTag) > 1:
-            link = "https://www.sports-reference.com" + winnerTag[1]['href'].encode('utf-8')
+            link = "https://www.sports-reference.com" + winnerTag[1]['href']
             home = loser
             away = winner
         else:
-            link = "https://www.sports-reference.com" + loserTag[1]['href'].encode('utf-8')
+            link = "https://www.sports-reference.com" + loserTag[1]['href']
             home = winner
             away = loser
         obj = Game(date, home, away)
@@ -83,26 +83,27 @@ def getBox(html, game, date):
         headers = headers[2:]
         colHeads = ['Date', 'Team', 'Opponent', 'Location', 'id']
         for h in headers: colHeads.append(h.get_text())
-        colHeads = [h.encode("utf-8") for h in colHeads]
+        colHeads = [h for h in colHeads]
         colHeads[5] = 'Name'
         colHeads.append('Coolness')
-        for percent in ['FG%', '2P%', '3P%', 'FT%']: colHeads.remove(percent)
+        for percent in ['FG%', '2P%', '3P%', 'FT%']: 
+            colHeads.remove(percent)
         df = pd.DataFrame(columns=colHeads)   
         rows = test.select("tbody tr")
         if len(rows) > 5:
             rows.remove(rows[5])
         for row in rows:
-            name = row.select("th")[0].get_text().encode('utf-8') 
+            name = row.select("th")[0].get_text()
             playerLink = row.select("th")[0].select_one("a")
             if playerLink is None:
                 id = name.replace(" ", "-") + "-1"
             else:
-                id = row.select("th")[0].select_one("a")['href'].encode('utf-8').replace("/cbb/players/", "").replace(".html", "")
+                id = row.select("th")[0].select_one("a")['href'].replace("/cbb/players/", "").replace(".html", "")
             line = [datetime.datetime.strptime(date, "%Y-%m-%d").date(), team.name , opponent, location, name, id]
             data = row.select('td')
             for x in data:
                 if not '_pct' in x['data-stat']:
-                    line.append(x.get_text().encode("utf-8"))
+                    line.append(x.get_text())
             try:
                 coolness = getCoolness(line)
                 line.append(coolness)

@@ -1,9 +1,9 @@
 import string
 import pandas as pd
 from shutil import copyfile
-from scripts.ParseBoxscore import getGames, processGame, insertToDb
-from scripts.GetSchedule import getGames as getSched
-from scripts.Objects import *
+from ParseBoxscore import getGames, processGame, insertToDb
+from GetSchedule import getGames as getSched
+from Objects import *
 from SQLFunctions import *
 
 def incrementDate(date):

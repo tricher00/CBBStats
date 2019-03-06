@@ -3,7 +3,10 @@ import os
 from shutil import copyfile
 import sqlite3 as sql
 import pandas as pd
-from scripts.Objects import Game
+try:
+    from scripts.Objects import Game
+except:
+    from Objects import Game
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_NAME = "cbb_18_19.db"
@@ -551,7 +554,7 @@ def getMaxDate():
     c.execute("SELECT max(date) FROM game_line;")
     date = c.fetchone()[0]
     if date == None: return "The database is empty"
-    else: return date.encode("utf-8")
+    else: return date
     
 def makeDbBackup():
     copyfile(db, db.replace(".db", "_bkp.db"))
