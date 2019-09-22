@@ -1,13 +1,40 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from datetime import datetime
 from .models import Team
 from .models import Player
 from .models import GameLine
 from .models import Conference
+from django.core import serializers
+from django.shortcuts import render
+from django.http import HttpResponse
+from datetime import datetime
+import pandas as pd
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
+from django.forms.models import model_to_dict
 from scripts.SQLFunctions import getPlayerLineById
 from scripts.GetSchedule import getGames
-import pandas as pd
+
+@api_view(["GET"])
+def player(request, player_id):
+    #player = serializers.serialize("json", Player.objects.get(id=player_id))
+    player = model_to_dict(Player.objects.get(id=player_id))
+    
+    return Response(status=status.HTTP_200_OK, data={"data": player})
+    
+@api_view(["GET"])
+def school(request, school_id):
+    school = model_to_dict(Team.objects.get(id=school_id))
+    return Response(status=status.HTTP_200_OK, data={"data": school})
+    
+@api_view(["GET"])
+def gameLine(request):
+    gameLines = serializers.serialize("json", GameLine.objects.all())
+    return Response(status=status.HTTP_200_OK, data={"data": gameLines})
+    
+@api_view(["GET"])
+def conference(request):
+    conferences = serializers.serialize("json", Conference.objects.all())
+    return Response(status=status.HTTP_200_OK, data={"data": conferences})
 
 def home(request):
     today = datetime.now()

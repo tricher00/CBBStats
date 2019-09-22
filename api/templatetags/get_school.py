@@ -1,6 +1,6 @@
 from django import template
 import sys
-from Site.models import Team
+from api.models import Team
 
 register = template.Library()
 

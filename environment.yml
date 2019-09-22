@@ -4,6 +4,7 @@ channels:
 - https://repo.continuum.io/pkgs/main
 - defaults
 dependencies:
+- python=3.7
 - beautifulsoup4
 - django
 - pandas
