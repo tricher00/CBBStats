@@ -18,7 +18,7 @@ def school_page(request, school):
     team = Team.objects.get(name=school)
     players = Player.objects.filter(team_id=team.id)
     stats = [PlayerStats(x) for x in players]
-    return render(request, 'school.html', {'team': team, 'players': stats})
+    return render(request, 'school.html', {'team': team, 'players': stats, 'colors': SchoolColors(school)})
     
 def player_page(request, player_id):
     player = Player.objects.get(id=player_id)
@@ -30,7 +30,28 @@ def conference_page(request, conference):
     conf = Conference.objects.get(abbrv=conference)
     teams = Team.objects.filter(conference=conf.abbrv).order_by('-conf_wins', '-wins')
     return render(request, 'conference.html', {'conference': conf, 'teams': teams})
-    
+
+#TODO: Add this to db
+class SchoolColors
+    def __init__(self, schoolName):
+        if "-am-" in schoolName or schoolName.endswith("-am"):
+            schoolName = schoolName.replace("-am", "-a&m")
+        if "-at-" in schoolName or schoolName.endswith("-at"):
+            schoolName = schoolName.replace("-at", "-a&t")
+        schoolName = schoolName.title()
+        colors = pd.read_csv("../static/colors.csv")
+        school = colors[colors.School == schoolName]
+        if len(school) == 0:
+            self.Primary = "#FFFFFF"
+            self.Secondary = "#000000"
+        elif school.isnull().values.any():
+            self.Primary = "#FFFFFF"
+            self.Secondary = "#000000"
+        else:
+            self.Primary = school.Primary.item()
+            self.Secondary = school.Secondary.item()
+
+
 class PlayerStats:
     def __init__(self, player):
         playerLine = getPlayerLineById(player.id)

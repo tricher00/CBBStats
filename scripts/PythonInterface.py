@@ -59,9 +59,7 @@ def updateDb():
     if sm == 'm':
         start = input("Start Date (YYYY-MM-DD): ")
         end = input("End Date (YYYY-MM-DD): ")
-        
-        currYear, currMonth, currDay = start.split('-')
-        endYear, endMonth, endDay = end.split('-')
+                
         date = start
         isLessThan = isDateLessThan(start, end)
         while isLessThan:
@@ -73,7 +71,6 @@ def updateDb():
                 insertToDb(game)
             date = incrementDate(date)
             isLessThan = isDateLessThan(date, end)
-            currYear, currMonth, currDay = date.split('-')
             makeDbBackup()
 
     elif sm == 's':
@@ -120,7 +117,7 @@ def getPlayer():
     if lineType == 's':
         print(getSimplePlayerLine(player))
     elif lineType == 'f':
-        print (etPlayerLine(player))
+        print (getPlayerLine(player))
     else:
         print("Please enter a valid input")
         
@@ -218,5 +215,5 @@ def main():
         elif var == 'E' : break
         else: print("Please enter a valid input")
             
-if __name__ == "__main__": main()    
+if __name__ == "__main__": main()
     
