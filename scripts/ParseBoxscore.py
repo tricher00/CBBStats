@@ -26,16 +26,16 @@ def getGames(date):
         try:
             winnerLink = winnerTag[0]['href']
             search = re.search(regex, winnerLink)
-            winner = Team(search.group(1))
+            winner = Team(winnerTag[0].get_text(), search.group(1))
         except:
-            winner = Team(winnerTag[0].get_text().replace(' ', '-').lower())
+            winner = Team(winnerTag[0].get_text(), winnerTag[0].get_text().replace(' ', '-').lower())
   
         try:
             loserLink = loserTag[0]['href']
             search = re.search(regex, loserLink)
-            loser = Team(search.group(1))
+            loser = Team(loserTag[0].get_text(), search.group(1))
         except:
-            loser = Team(loserTag[0].get_text().replace(' ', '-').lower())
+            loser = Team(loserTag[0].get_text(), loserTag[0].get_text().replace(' ', '-').lower())
 
         for ch in ['\'', '(', ')', '&', '.']:
             if ch in winner.name: winner.name = winner.name.replace(ch, '')
@@ -60,13 +60,15 @@ def getBox(html, game, date):
     colHeads = []
     teams = [game.home, game.away]
 
+    AddTeamsToDb(teams)
+
     scores = html.find_all('div',  {"class":"score"})
     if len(scores) < 2: return
     game.awayScore = int(scores[0].get_text())
     game.homeScore = int(scores[1].get_text())
     
     for team in teams:
-        test = html.find('table', id='box-score-basic-' + team.name)
+        test = html.find('table', id='box-score-basic-' + team.id)
         if team.isHome: 
             opponent = game.away.name
             location = 'Home'
@@ -203,7 +205,6 @@ def getCoolness(line):
         
     return coolness
     
-    
 def processGame(game, date):
     print("Processing " + game.away.name + " vs. " + game.home.name)
     page = requests.get(game.link)
@@ -225,7 +226,7 @@ def insertToDb(game):
     lines = homeLines + awayLines
     
     for line in lines:
-        insertGameLine(line, gameId)
+        insertGameLine(line, gameId, game.season)
         
 def incrementDate(date):
     year, month, day = date.split('-')

@@ -1,7 +1,7 @@
 import string
 import os
 from shutil import copyfile
-import sqlite3 as sql
+import mysql.connector as sql
 import pandas as pd
 try:
     from scripts.Objects import Game
@@ -9,47 +9,41 @@ except:
     from Objects import Game
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_NAME = "cbb_18_19.db"
-db = os.path.join(BASE_DIR, "database", DB_NAME)
+DB_NAME = "CBBStats"
+
+def connectToDb():
+    return sql.connect(user='root', password='password', host='127.0.0.1', database=DB_NAME)
 
 def getTeamId(teamName):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
 
     var = (teamName,)
     
-    c.execute("SELECT id FROM team WHERE name = ?", var)
+    c.execute("SELECT id FROM team WHERE name = %s", var)
     
     temp = c.fetchone()
-    
-    if temp == None:
-        c.execute("INSERT INTO team (name, conference) VALUES (?,'none')", var)
-        c.execute("SELECT id FROM team WHERE name = ?", var)
-        temp = c.fetchone()
-        conn.commit()
-    
-    conn.close()
     return temp[0]
 
-def getTeamConf(teamId):
-    conn = sql.connect(db)
-    c = conn.cursor()
-
-    var = (teamId,)
-    
-    c.execute("SELECT conference FROM team WHERE id = ?", var)
-    temp = c.fetchone()
-    conn.commit()
-
-    return temp[0]
+def getTeamConf(teamId, season):
+    schoolToConf = pd.read_csv(
+        os.path.join(BASE_DIR, "static/ConferenceData/{}_SchoolToConferenceMap.csv".format(season)))
+    abbrvs = pd.read_csv(
+        os.path.join(BASE_DIR, "static/ConferenceData/{}_ConferenceAbbreviations.csv".format(season)))
+    try:
+        conf = schoolToConf[schoolToConf.School == teamId].iloc[0].Conference
+        abbrv = abbrvs[abbrvs.Conference == conf].iloc[0].Abbreviation
+        return abbrv
+    except:
+        return 'none'
     
 def getPlayerId(playerName, team = None):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
         
     if team == None:
         var = (playerName,)
-        c.execute("SELECT team.name FROM player INNER JOIN team ON player.team_id = team.id WHERE player.name = ? COLLATE NOCASE", var)
+        c.execute("SELECT team.name FROM player INNER JOIN team ON player.team_id = team.id WHERE player.name = %s COLLATE NOCASE", var)
         temp = c.fetchall()
         print(temp)
         if len(temp) > 1:
@@ -73,7 +67,7 @@ def getPlayerId(playerName, team = None):
         
     teamId = getTeamId(team)
     var = (playerName, teamId)
-    c.execute("SELECT id FROM player WHERE name = ? AND team_id = ? COLLATE NOCASE", var)
+    c.execute("SELECT id FROM player WHERE name = %s AND team_id = %s COLLATE NOCASE", var)
     temp = c.fetchone()
         
     if temp == None:
@@ -81,104 +75,86 @@ def getPlayerId(playerName, team = None):
     conn.close()
     return temp[0]
 
-def insertPlayer(id, player, teamId):
-    conn = sql.connect(db)
+def insertPlayer(id, player):
+    conn = connectToDb()
     conn.text_factory = str
     c = conn.cursor()
     var = (id,)
-    c.execute("SELECT * FROM player WHERE id = ?", var)
+    c.execute("SELECT * FROM player WHERE id = %s", var)
     temp = c.fetchone()
 
     if temp == None:
-        var = (id, player, teamId)
-        c.execute("INSERT INTO player (id, name, team_id) VALUES (?,?,?)", var)
+        var = (id, player)
+        c.execute("INSERT INTO player (id, name) VALUES (%s,%s)", var)
         conn.commit()
 
     conn.close()
 
-def insertGameLine(line, gameId):
-    conn = sql.connect(db)
+def AddTeamsToDb(teams):
+    conn = connectToDb()
+    c = conn.cursor()
+    for team in teams:
+        var = (team.name,)
+        
+        c.execute("SELECT id FROM team WHERE name = %s", var)
+        
+        temp = c.fetchone()
+        
+        if temp == None:
+            var = (team.id, team.name)
+            c.execute("INSERT INTO team (id, name) VALUES (%s,%s)", var)
+            conn.commit()
+    conn.close()
+
+def insertGameLine(line, gameId, season):
+    conn = connectToDb()
     c = conn.cursor()
     
     date, team, opponent, location, player, id, mins, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness = line
     
     teamId = getTeamId(team)
     opponentId = getTeamId(opponent)
-    # playerId = getPlayerId(player, team)
-    insertPlayer(id, player, teamId)
+    insertPlayer(id, player)
     
-    var = (gameId, date, id, teamId, opponentId, location, mins, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness)
+    var = (gameId, date, season, id, teamId, opponentId, location, mins, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness)
     
-    c.execute("INSERT INTO game_line (game_id, date, player_id, team_id, opponent_id, location, minutes, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", var)
+    c.execute("INSERT INTO game_line (game_id, date, season, player_id, team_id, opponent_id, location, minutes, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", var)
     conn.commit()
     conn.close()
 
 def insertGame(game):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
 
     isConf = 0
     date = game.date
 
-    homeId = getTeamId(game.home.name)
+    homeId = game.home.id
     homeScore = game.homeScore
-    homeConf = getTeamConf(homeId)
+    homeConf = getTeamConf(homeId, game.season)
 
-    awayId = getTeamId(game.away.name)
+    awayId = game.away.id
     awayScore = game.awayScore
-    awayConf = getTeamConf(awayId)
+    awayConf = getTeamConf(awayId, game.season)
 
     if homeConf == awayConf: isConf = 1
 
-    var = (isConf, date, homeId, awayId, homeScore, awayScore)
+    var = (isConf, date, game.season, homeId, awayId, homeScore, awayScore)
 
-    c.execute("INSERT INTO game (conf_game, date, home_id, away_id, home_score, away_score) VALUES (?,?,?,?,?,?)", var)
+    c.execute("INSERT INTO game (conf_game, date, season, home_id, away_id, home_score, away_score) VALUES (%s,%s,%s,%s,%s,%s,%s)", var)
     conn.commit()
 
     var = (date, homeId, awayId)
 
-    c.execute("SELECT id FROM game WHERE date = ? AND home_id = ? AND away_id = ?", var)
+    c.execute("SELECT id FROM game WHERE date = %s AND home_id = %s AND away_id = %s", var)
     temp = c.fetchone()
 
     conn.close()
 
-    if homeScore > awayScore:
-        updateWinner(homeId, isConf)
-        updateLoser(awayId, isConf)
-    else:
-        updateWinner(awayId, isConf)
-        updateLoser(homeId, isConf)
-
     return temp[0]
-
-def updateWinner(teamId, isConf):
-    conn = sql.connect(db)
-    c = conn.cursor()
-
-    var = (teamId,)
-
-    c.execute("UPDATE team SET wins = wins + 1 WHERE id = ?", var)
-
-    if isConf:
-        c.execute("UPDATE team SET conf_wins = conf_wins + 1 WHERE id = ?", var)
-    conn.commit()
-    conn.close()
-
-def updateLoser(teamId, isConf):
-    conn = sql.connect(db)
-    c = conn.cursor()
-
-    var = (teamId,)
-
-    c.execute("UPDATE team SET losses = losses + 1 WHERE id = ?", var)
-
-    if isConf:
-        c.execute("UPDATE team SET conf_losses = conf_losses + 1 WHERE id = ?", var)
-    conn.commit()
-    conn.close()
     
 def getPlayerLine(playerName):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
 
     playerName = string.capwords(playerName)
@@ -213,7 +189,7 @@ def getPlayerLine(playerName):
         "SUM(coolness) as Coolness ",
         "FROM game_line ",
         "INNER JOIN team ON team.id = game_line.team_id ",
-        "INNER JOIN player ON player.id = game_line.player_id WHERE player.id = ? "
+        "INNER JOIN player ON player.id = game_line.player_id WHERE player.id = %s "
     ]
     
     query = ""
@@ -230,7 +206,7 @@ def getPlayerLine(playerName):
     return pd.Series(temp, colNames)
 
 def getPlayerLineById(playerId):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
 
     var = (playerId,)
@@ -261,7 +237,7 @@ def getPlayerLineById(playerId):
         "SUM(coolness) as Coolness ",
         "FROM game_line ",
         "INNER JOIN team ON team.id = game_line.team_id ",
-        "INNER JOIN player ON player.id = game_line.player_id WHERE player.id = ? "
+        "INNER JOIN player ON player.id = game_line.player_id WHERE player.id = %s "
     ]
     
     query = ""
@@ -278,7 +254,7 @@ def getPlayerLineById(playerId):
     return pd.Series(temp, colNames)
     
 def getAllPlayerLines():
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
     
     queryList = [
@@ -333,12 +309,12 @@ def getAllPlayerLines():
     return df
 
 def getSOS(playerId):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
 
     var = (playerId,)
 
-    query = "SELECT opponent_id FROM game_line WHERE player_id = (?);"
+    query = "SELECT opponent_id FROM game_line WHERE player_id = (%s);"
 
     c.execute(query, var)
     temp = c.fetchall()
@@ -348,7 +324,7 @@ def getSOS(playerId):
     sumSos = 0
     for id in oppIds:
         newVar = (id,)
-        newQuery = "SELECT wins/CAST((wins + losses) AS float)  FROM team WHERE id = (?);"
+        newQuery = "SELECT wins/CAST((wins + losses) AS float)  FROM team WHERE id = (%s);"
         c.execute(newQuery, newVar)
         sos = c.fetchone()[0]
         try:
@@ -359,7 +335,7 @@ def getSOS(playerId):
     return float(sumSos/len(oppIds))
     
 def getSimplePlayerLine(playerName):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
     
     playerName = string.capwords(playerName)
@@ -385,7 +361,7 @@ def getSimplePlayerLine(playerName):
         "SUM(ft_made) / CAST(SUM(ft_attempt) as float) as 'FT%' ",
         "FROM game_line ",
         "INNER JOIN team ON team.id = player.team_id ",
-        "INNER JOIN player ON player.id = game_line.player_id  WHERE player.id = ? ",
+        "INNER JOIN player ON player.id = game_line.player_id  WHERE player.id = %s ",
         "COLLATE NOCASE;"
     ]
     
@@ -404,7 +380,7 @@ def getSimplePlayerLine(playerName):
     
     
 def getTeamPage(teamName):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
     
     teamName = teamName.lower()
@@ -439,7 +415,7 @@ def getTeamPage(teamName):
         "SUM(ft_made) ",
         "FROM game_line ",
         "INNER JOIN team ON team.id = player.team_id ",
-        "INNER JOIN player ON player.id = game_line.player_id WHERE team.name = ? "
+        "INNER JOIN player ON player.id = game_line.player_id WHERE team.name = %s "
         "GROUP BY player_id;"
     ]
     
@@ -458,7 +434,7 @@ def getTeamPage(teamName):
     return page.round(2)
 
 def getLeaderboard(stat, limit):
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
     
     statQuery = {
@@ -491,7 +467,7 @@ def getLeaderboard(stat, limit):
         "INNER JOIN team ON team.id = game_line.team_id ",
         "GROUP BY player_id ",
         "ORDER by stat DESC ",
-        "LIMIT ?;"
+        "LIMIT %s;"
     ]
         
     for x in queryList: query += x
@@ -521,7 +497,7 @@ def getLeaderboard(stat, limit):
     return df.round(2)
     
 def getWatchability():
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
     c.execute("SELECT team.name, team_id, SUM(minutes), SUM(coolness) FROM game_line INNER JOIN team on team_id = team.id GROUP BY team_id")
     temp = c.fetchall()
@@ -549,12 +525,10 @@ def getWatchability():
     return watchFrame
 
 def getMaxDate():
-    conn = sql.connect(db)
+    conn = connectToDb()
     c = conn.cursor()
     c.execute("SELECT max(date) FROM game_line;")
     date = c.fetchone()[0]
     if date == None: return "The database is empty"
     else: return date
     
-def makeDbBackup():
-    copyfile(db, db.replace(".db", "_bkp.db"))

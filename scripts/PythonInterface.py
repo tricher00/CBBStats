@@ -71,7 +71,6 @@ def updateDb():
                 insertToDb(game)
             date = incrementDate(date)
             isLessThan = isDateLessThan(date, end)
-            makeDbBackup()
 
     elif sm == 's':
         date = input("Date (YYYY-MM-DD): ")
