@@ -1,0 +1,352 @@
+School,Conference
+cincinnati,American Athletic Conference
+houston,American Athletic Conference
+wichita-state,American Athletic Conference
+tulsa,American Athletic Conference
+memphis,American Athletic Conference
+central-florida,American Athletic Conference
+temple,American Athletic Conference
+connecticut,American Athletic Conference
+southern-methodist,American Athletic Conference
+tulane,American Athletic Conference
+east-carolina,American Athletic Conference
+south-florida,American Athletic Conference
+virginia,Atlantic Coast Conference
+duke,Atlantic Coast Conference
+clemson,Atlantic Coast Conference
+north-carolina,Atlantic Coast Conference
+miami-fl,Atlantic Coast Conference
+north-carolina-state,Atlantic Coast Conference
+virginia-tech,Atlantic Coast Conference
+florida-state,Atlantic Coast Conference
+louisville,Atlantic Coast Conference
+syracuse,Atlantic Coast Conference
+notre-dame,Atlantic Coast Conference
+boston-college,Atlantic Coast Conference
+georgia-tech,Atlantic Coast Conference
+wake-forest,Atlantic Coast Conference
+pittsburgh,Atlantic Coast Conference
+vermont,America East Conference
+maryland-baltimore-county,America East Conference
+hartford,America East Conference
+albany-ny,America East Conference
+stony-brook,America East Conference
+massachusetts-lowell,America East Conference
+new-hampshire,America East Conference
+maine,America East Conference
+binghamton,America East Conference
+rhode-island,Atlantic 10 Conference
+st-bonaventure,Atlantic 10 Conference
+davidson,Atlantic 10 Conference
+saint-josephs,Atlantic 10 Conference
+virginia-commonwealth,Atlantic 10 Conference
+saint-louis,Atlantic 10 Conference
+george-mason,Atlantic 10 Conference
+richmond,Atlantic 10 Conference
+dayton,Atlantic 10 Conference
+duquesne,Atlantic 10 Conference
+george-washington,Atlantic 10 Conference
+la-salle,Atlantic 10 Conference
+massachusetts,Atlantic 10 Conference
+fordham,Atlantic 10 Conference
+florida-gulf-coast,Atlantic Sun Conference
+lipscomb,Atlantic Sun Conference
+jacksonville,Atlantic Sun Conference
+njit,Atlantic Sun Conference
+north-florida,Atlantic Sun Conference
+kennesaw-state,Atlantic Sun Conference
+stetson,Atlantic Sun Conference
+south-carolina-upstate,Atlantic Sun Conference
+kansas,Big 12 Conference
+texas-tech,Big 12 Conference
+west-virginia,Big 12 Conference
+kansas-state,Big 12 Conference
+texas-christian,Big 12 Conference
+oklahoma-state,Big 12 Conference
+oklahoma,Big 12 Conference
+baylor,Big 12 Conference
+texas,Big 12 Conference
+iowa-state,Big 12 Conference
+xavier,Big East Conference
+villanova,Big East Conference
+seton-hall,Big East Conference
+creighton,Big East Conference
+providence,Big East Conference
+butler,Big East Conference
+marquette,Big East Conference
+georgetown,Big East Conference
+st-johns-ny,Big East Conference
+depaul,Big East Conference
+montana,Big Sky Conference
+idaho,Big Sky Conference
+weber-state,Big Sky Conference
+eastern-washington,Big Sky Conference
+northern-colorado,Big Sky Conference
+portland-state,Big Sky Conference
+idaho-state,Big Sky Conference
+montana-state,Big Sky Conference
+north-dakota,Big Sky Conference
+southern-utah,Big Sky Conference
+sacramento-state,Big Sky Conference
+northern-arizona,Big Sky Conference
+north-carolina-asheville,Big South Conference
+radford,Big South Conference
+winthrop,Big South Conference
+campbell,Big South Conference
+liberty,Big South Conference
+charleston-southern,Big South Conference
+high-point,Big South Conference
+gardner-webb,Big South Conference
+presbyterian,Big South Conference
+longwood,Big South Conference
+michigan-state,Big Ten Conference
+purdue,Big Ten Conference
+ohio-state,Big Ten Conference
+michigan,Big Ten Conference
+nebraska,Big Ten Conference
+penn-state,Big Ten Conference
+indiana,Big Ten Conference
+maryland,Big Ten Conference
+wisconsin,Big Ten Conference
+northwestern,Big Ten Conference
+minnesota,Big Ten Conference
+illinois,Big Ten Conference
+iowa,Big Ten Conference
+rutgers,Big Ten Conference
+california-davis,Big West Conference
+california-santa-barbara,Big West Conference
+california-irvine,Big West Conference
+cal-state-fullerton,Big West Conference
+long-beach-state,Big West Conference
+hawaii,Big West Conference
+cal-poly,Big West Conference
+california-riverside,Big West Conference
+cal-state-northridge,Big West Conference
+college-of-charleston,Colonial Athletic Association
+northeastern,Colonial Athletic Association
+hofstra,Colonial Athletic Association
+william-mary,Colonial Athletic Association
+towson,Colonial Athletic Association
+north-carolina-wilmington,Colonial Athletic Association
+elon,Colonial Athletic Association
+delaware,Colonial Athletic Association
+drexel,Colonial Athletic Association
+james-madison,Colonial Athletic Association
+middle-tennessee,Conference USA
+old-dominion,Conference USA
+western-kentucky,Conference USA
+marshall,Conference USA
+texas-san-antonio,Conference USA
+alabama-birmingham,Conference USA
+north-texas,Conference USA
+florida-international,Conference USA
+louisiana-tech,Conference USA
+southern-mississippi,Conference USA
+florida-atlantic,Conference USA
+texas-el-paso,Conference USA
+rice,Conference USA
+charlotte,Conference USA
+northern-kentucky,Horizon League
+wright-state,Horizon League
+illinois-chicago,Horizon League
+oakland,Horizon League
+milwaukee,Horizon League
+iupui,Horizon League
+green-bay,Horizon League
+cleveland-state,Horizon League
+youngstown-state,Horizon League
+detroit-mercy,Horizon League
+pennsylvania,Ivy Group
+harvard,Ivy Group
+yale,Ivy Group
+cornell,Ivy Group
+princeton,Ivy Group
+columbia,Ivy Group
+brown,Ivy Group
+dartmouth,Ivy Group
+rider,Metro Atlantic Athletic Conference
+canisius,Metro Atlantic Athletic Conference
+niagara,Metro Atlantic Athletic Conference
+iona,Metro Atlantic Athletic Conference
+fairfield,Metro Atlantic Athletic Conference
+manhattan,Metro Atlantic Athletic Conference
+quinnipiac,Metro Atlantic Athletic Conference
+monmouth,Metro Atlantic Athletic Conference
+saint-peters,Metro Atlantic Athletic Conference
+siena,Metro Atlantic Athletic Conference
+marist,Metro Atlantic Athletic Conference
+buffalo,Mid-American Conference
+kent-state,Mid-American Conference
+miami-oh,Mid-American Conference
+bowling-green-state,Mid-American Conference
+ohio,Mid-American Conference
+akron,Mid-American Conference
+toledo,Mid-American Conference
+eastern-michigan,Mid-American Conference
+ball-state,Mid-American Conference
+western-michigan,Mid-American Conference
+central-michigan,Mid-American Conference
+northern-illinois,Mid-American Conference
+bethune-cookman,Mid-Eastern Athletic Conference
+savannah-state,Mid-Eastern Athletic Conference
+hampton,Mid-Eastern Athletic Conference
+north-carolina-at,Mid-Eastern Athletic Conference
+norfolk-state,Mid-Eastern Athletic Conference
+north-carolina-central,Mid-Eastern Athletic Conference
+morgan-state,Mid-Eastern Athletic Conference
+howard,Mid-Eastern Athletic Conference
+florida-am,Mid-Eastern Athletic Conference
+south-carolina-state,Mid-Eastern Athletic Conference
+coppin-state,Mid-Eastern Athletic Conference
+maryland-eastern-shore,Mid-Eastern Athletic Conference
+delaware-state,Mid-Eastern Athletic Conference
+loyola-il,Missouri Valley Conference
+southern-illinois,Missouri Valley Conference
+illinois-state,Missouri Valley Conference
+drake,Missouri Valley Conference
+bradley,Missouri Valley Conference
+indiana-state,Missouri Valley Conference
+missouri-state,Missouri Valley Conference
+evansville,Missouri Valley Conference
+northern-iowa,Missouri Valley Conference
+valparaiso,Missouri Valley Conference
+nevada,Mountain West Conference
+boise-state,Mountain West Conference
+new-mexico,Mountain West Conference
+san-diego-state,Mountain West Conference
+fresno-state,Mountain West Conference
+wyoming,Mountain West Conference
+nevada-las-vegas,Mountain West Conference
+utah-state,Mountain West Conference
+air-force,Mountain West Conference
+colorado-state,Mountain West Conference
+san-jose-state,Mountain West Conference
+wagner,Northeast Conference
+saint-francis-pa,Northeast Conference
+mount-st-marys,Northeast Conference
+long-island-university,Northeast Conference
+st-francis-ny,Northeast Conference
+robert-morris,Northeast Conference
+fairleigh-dickinson,Northeast Conference
+central-connecticut-state,Northeast Conference
+sacred-heart,Northeast Conference
+bryant,Northeast Conference
+murray-state,Ohio Valley Conference
+belmont,Ohio Valley Conference
+austin-peay,Ohio Valley Conference
+jacksonville-state,Ohio Valley Conference
+tennessee-tech,Ohio Valley Conference
+tennessee-state,Ohio Valley Conference
+southeast-missouri-state,Ohio Valley Conference
+eastern-illinois,Ohio Valley Conference
+eastern-kentucky,Ohio Valley Conference
+tennessee-martin,Ohio Valley Conference
+southern-illinois-edwardsville,Ohio Valley Conference
+morehead-state,Ohio Valley Conference
+arizona,Pacific-12 Conference
+southern-california,Pacific-12 Conference
+utah,Pacific-12 Conference
+ucla,Pacific-12 Conference
+stanford,Pacific-12 Conference
+oregon,Pacific-12 Conference
+washington,Pacific-12 Conference
+arizona-state,Pacific-12 Conference
+colorado,Pacific-12 Conference
+oregon-state,Pacific-12 Conference
+washington-state,Pacific-12 Conference
+california,Pacific-12 Conference
+bucknell,Patriot League
+colgate,Patriot League
+navy,Patriot League
+lehigh,Patriot League
+boston-university,Patriot League
+holy-cross,Patriot League
+lafayette,Patriot League
+army,Patriot League
+loyola-md,Patriot League
+american,Patriot League
+auburn,Southeastern Conference
+tennessee,Southeastern Conference
+florida,Southeastern Conference
+kentucky,Southeastern Conference
+arkansas,Southeastern Conference
+missouri,Southeastern Conference
+mississippi-state,Southeastern Conference
+texas-am,Southeastern Conference
+alabama,Southeastern Conference
+louisiana-state,Southeastern Conference
+georgia,Southeastern Conference
+south-carolina,Southeastern Conference
+vanderbilt,Southeastern Conference
+mississippi,Southeastern Conference
+north-carolina-greensboro,Southern Conference
+east-tennessee-state,Southern Conference
+furman,Southern Conference
+wofford,Southern Conference
+mercer,Southern Conference
+western-carolina,Southern Conference
+samford,Southern Conference
+citadel,Southern Conference
+virginia-military-institute,Southern Conference
+chattanooga,Southern Conference
+nicholls-state,Southland Conference
+southeastern-louisiana,Southland Conference
+stephen-f-austin,Southland Conference
+sam-houston-state,Southland Conference
+lamar,Southland Conference
+new-orleans,Southland Conference
+central-arkansas,Southland Conference
+abilene-christian,Southland Conference
+mcneese-state,Southland Conference
+texas-am-corpus-christi,Southland Conference
+incarnate-word,Southland Conference
+houston-baptist,Southland Conference
+northwestern-state,Southland Conference
+south-dakota-state,Summit League
+south-dakota,Summit League
+denver,Summit League
+ipfw,Summit League
+north-dakota-state,Summit League
+oral-roberts,Summit League
+nebraska-omaha,Summit League
+western-illinois,Summit League
+louisiana-lafayette,Sun Belt Conference
+georgia-state,Sun Belt Conference
+georgia-southern,Sun Belt Conference
+texas-arlington,Sun Belt Conference
+louisiana-monroe,Sun Belt Conference
+troy,Sun Belt Conference
+appalachian-state,Sun Belt Conference
+coastal-carolina,Sun Belt Conference
+texas-state,Sun Belt Conference
+south-alabama,Sun Belt Conference
+arkansas-state,Sun Belt Conference
+arkansas-little-rock,Sun Belt Conference
+grambling,Southwest Athletic Conference
+prairie-view,Southwest Athletic Conference
+texas-southern,Southwest Athletic Conference
+arkansas-pine-bluff,Southwest Athletic Conference
+southern,Southwest Athletic Conference
+jackson-state,Southwest Athletic Conference
+alabama-state,Southwest Athletic Conference
+alcorn-state,Southwest Athletic Conference
+mississippi-valley-state,Southwest Athletic Conference
+alabama-am,Southwest Athletic Conference
+new-mexico-state,Western Athletic Conference
+utah-valley,Western Athletic Conference
+grand-canyon,Western Athletic Conference
+seattle,Western Athletic Conference
+texas-pan-american,Western Athletic Conference
+cal-state-bakersfield,Western Athletic Conference
+missouri-kansas-city,Western Athletic Conference
+chicago-state,Western Athletic Conference
+gonzaga,West Coast Conference
+saint-marys-ca,West Coast Conference
+brigham-young,West Coast Conference
+san-diego,West Coast Conference
+san-francisco,West Coast Conference
+pacific,West Coast Conference
+santa-clara,West Coast Conference
+loyola-marymount,West Coast Conference
+portland,West Coast Conference
+pepperdine,West Coast Conference
