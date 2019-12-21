@@ -32,7 +32,7 @@ def getTeamConf(teamId, season):
         os.path.join(BASE_DIR, "static/ConferenceData/{}_ConferenceAbbreviations.csv".format(season)))
     try:
         conf = schoolToConf[schoolToConf.School == teamId].iloc[0].Conference
-        abbrv = abbrvs[abbrvs.Conference == conf].iloc[0].Abbreviation
+        abbrv = abbrvs[abbrvs.Name == conf].iloc[0].Abbreviation
         return abbrv
     except:
         return 'none'
