@@ -40,10 +40,12 @@ def getGames(date):
             link = "https://www.sports-reference.com" + winnerTag[1]['href']
             home = loser
             away = winner
-        else:
+        elif len(loserTag) > 1:
             link = "https://www.sports-reference.com" + loserTag[1]['href']
             home = winner
             away = loser
+        else:
+            continue
         obj = Game(date, home, away)
         obj.link = link
         allObjects.append(obj)
@@ -92,14 +94,17 @@ def getBox(html, game, date):
             name = row.select("th")[0].get_text()
             playerLink = row.select("th")[0].select_one("a")
             if playerLink is None:
-                id = name.replace(" ", "-") + "-1"
+                continue
             else:
-                id = row.select("th")[0].select_one("a")['href'].replace("/cbb/players/", "").replace(".html", "")
+                id = row.select("th")[0].select_one("a")['href'].replace("/cbb/players/", "").replace(".html", "").lower()
             line = [datetime.datetime.strptime(date, "%Y-%m-%d").date(), team.name , opponent, location, name, id]
             data = row.select('td')
             for x in data:
                 if not '_pct' in x['data-stat']:
-                    line.append(x.get_text())
+                    stat = x.get_text()
+                    if stat == '':
+                        stat = 0
+                    line.append(stat)
             try:
                 coolness = getCoolness(line)
                 line.append(coolness)
