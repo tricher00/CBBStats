@@ -7,39 +7,23 @@
     <title>{{ team.name|format_school }}</title>
   </head>
   <body>
-    <h1>{{ team.name|format_school }} | <a href="../conferences/{{team.conference}}">{{ team.conference|format_conference }}</a></h1>
-    <h3>
-        Overall Record: {{ team.wins }}-{{ team.losses }}
-        Conference Record: {{ team.conf_wins }}-{{ team.conf_losses }}
-    </h3>
+    <h1>{{ team.name|format_school }} | <a href="../conferences/{{conference_id}}">{{ conference }}</a></h1>
     <table>
         <thead>
-            <tr>
-                <th>Name</th>
-                <th>MPG</th>
-                <th>PPG</th>
-                <th>RPG</th>
-                <th>APG</th>
-                <th>SPG</th>
-                <th>BPG</th>
-                <th>FG%</th>
-                <th>3P%</th>
-                <th>FT%</th>
-            </tr>
+            <th>Season</th>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Conf. Wins</th>
+            <th>Conf. Losses</th>
         </thead>
         <tbody>
-            {% for player in players %}
+            {% for record in records %}
                 <tr>
-                    <td><a href="../players/{{player.id}}">{{player.name}}</a></td>
-                    <td>{{ player.MPG }}</td>
-                    <td>{{ player.PPG }}</td>
-                    <td>{{ player.RPG }}</td>
-                    <td>{{ player.APG }}</td>
-                    <td>{{ player.SPG }}</td>
-                    <td>{{ player.BPG }}</td>
-                    <td>{{ player.FGP }}</td>
-                    <td>{{ player.TPP }}</td>
-                    <td>{{ player.FTP }}</td>
+                    <td><a href='./{{ team.id }}/{{ record.season }}'>{{ record.season }}</a></td>
+                    <td>{{ record.wins }}</td>
+                    <td>{{ record.losses }}</td>
+                    <td>{{ record.confWins }}</td>
+                    <td>{{ record.confLosses }}</td>
                 </tr>
             {% endfor %}
         </tbody>

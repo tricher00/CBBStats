@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 {% load format_school %}
 {% load get_school %}
+{% load get_player_school %}
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{{ player.name }}</title>
+    <title>{{ player.name }} | Player Page</title>
   </head>
   <body>
-    <h1>{{ player.name }} | <a href="../schools/{{player.team_id|get_school}}">{{ player.team_id|get_school|format_school }}</a></h1>
+    <h1>{{ player.name }} | <a href="../schools/{{player.id|get_player_school}}">{{ player.id|get_player_school|format_school }}</a></h1>
     <table>
         <thead>
             <tr>
+                <th>Season</th>
+                <th>School</th>
+                <th>Games</th>
                 <th>MPG</th>
                 <th>PPG</th>
                 <th>RPG</th>
@@ -23,16 +27,35 @@
             </tr>
         </thead>
         <tbody>
+            {% for season in seasonStats %}
+                <tr>
+                    <td><a href="../schools/{{ season.school_id }}/{{ season.season }}">{{ season.season }}</a></td>
+                    <td><a href="../schools/{{ season.school_id }}">{{ season.school }}</a></td>
+                    <td>{{ season.games }}</td>
+                    <td>{{ season.MPG }}</td>
+                    <td>{{ season.PPG }}</td>
+                    <td>{{ season.RPG }}</td>
+                    <td>{{ season.APG }}</td>
+                    <td>{{ season.SPG }}</td>
+                    <td>{{ season.BPG }}</td>
+                    <td>{{ season.FGP }}</td>
+                    <td>{{ season.TPP }}</td>
+                    <td>{{ season.FTP }}</td>
+                </tr>
+            {% endfor %}
             <tr>
-                <td>{{ stats.MPG }}</td>
-                <td>{{ stats.PPG }}</td>
-                <td>{{ stats.RPG }}</td>
-                <td>{{ stats.APG }}</td>
-                <td>{{ stats.SPG }}</td>
-                <td>{{ stats.BPG }}</td>
-                <td>{{ stats.FGP }}</td>
-                <td>{{ stats.TPP }}</td>
-                <td>{{ stats.FTP }}</td>
+                <td>Career</td>
+                <td></td>
+                <td>{{ careerStats.games }}</td>
+                <td>{{ careerStats.MPG }}</td>
+                <td>{{ careerStats.PPG }}</td>
+                <td>{{ careerStats.RPG }}</td>
+                <td>{{ careerStats.APG }}</td>
+                <td>{{ careerStats.SPG }}</td>
+                <td>{{ careerStats.BPG }}</td>
+                <td>{{ careerStats.FGP }}</td>
+                <td>{{ careerStats.TPP }}</td>
+                <td>{{ careerStats.FTP }}</td>
             </tr>
         </tbody>
     </table>
@@ -61,7 +84,7 @@
         <tbody>
             {% for line in lines %}
             <tr>
-                <td>{{ line.opponent_id|get_school|format_school }}</td>
+                <td><a href="../schools/{{ line.opponent_id }}/{{ line.season }}">{{ line.opponent_id|get_school|format_school }}</td>
                 <td>{{ line.location }}</td>
                 <td>{{ line.minutes }}</td>
                 <td>{{ line.fg_attempt }}</td>

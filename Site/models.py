@@ -13,9 +13,10 @@ class Conference(models.Model):
 class Game(models.Model):
     id = models.IntegerField(unique=True, primary_key=True)
     date = models.DateField(blank=True, null=True)
+    season = models.TextField(blank=True, null=True)
     conf_game = models.IntegerField(blank=True, null=True)
-    home_id = models.IntegerField(blank=True, null=True)
-    away_id = models.IntegerField(blank=True, null=True)
+    home_id = models.TextField(blank=True, null=True)
+    away_id = models.TextField(blank=True, null=True)
     home_score = models.IntegerField(blank=True, null=True)
     away_score = models.IntegerField(blank=True, null=True)
 
@@ -27,9 +28,10 @@ class GameLine(models.Model):
     id = models.IntegerField(unique=True, primary_key=True)
     game_id = models.IntegerField(blank=True, null=True)
     date = models.DateField(blank=True, null=True)
+    season = models.TextField(blank=True, null=True)
     player_id = models.TextField(blank=True, null=True)
-    team_id = models.IntegerField(blank=True, null=True)
-    opponent_id = models.IntegerField(blank=True, null=True)
+    team_id = models.TextField(blank=True, null=True)
+    opponent_id = models.TextField(blank=True, null=True)
     location = models.TextField(blank=True, null=True)
     minutes = models.IntegerField(blank=True, null=True)
     fg_made = models.IntegerField(blank=True, null=True)
@@ -58,20 +60,14 @@ class GameLine(models.Model):
 class Player(models.Model):
     id = models.TextField(unique=True, primary_key=True)
     name = models.TextField(blank=True, null=True)
-    team_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'player'
 
 class Team(models.Model):
-    id = models.IntegerField(unique=True, primary_key=True)
-    conference = models.TextField(blank=True, null=True)
+    id = models.TextField(unique=True, primary_key=True)
     name = models.TextField(blank=True, null=True)
-    wins = models.IntegerField(blank=True, null=True)
-    losses = models.IntegerField(blank=True, null=True)
-    conf_wins = models.IntegerField(blank=True, null=True)
-    conf_losses = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

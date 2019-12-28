@@ -1,13 +1,14 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.http import HttpResponse
 from datetime import datetime
 from .models import Team
 from .models import Player
+from .models import Game
 from .models import GameLine
 from .models import Conference
-from scripts.SQLFunctions import getPlayerLineById
 from scripts.GetSchedule import getGames
-import pandas as pd
+from scripts.ViewsUtils import *
 
 def home(request):
     today = datetime.now()
@@ -15,65 +16,50 @@ def home(request):
     return render(request, 'home.html', {'games': getGames(date)})
 
 def school_page(request, school):
-    team = Team.objects.get(name=school)
-    players = Player.objects.filter(team_id=team.id)
-    stats = [PlayerStats(x) for x in players]
-    return render(request, 'school.html', {'team': team, 'players': stats, 'colors': SchoolColors(school)})
-    
+    team = Team.objects.get(id=school)
+    conference, conference_id = GetConferenceData(school, 2020)
+    games = Game.objects.filter(Q(home_id = school) | Q(away_id = school))
+    seasons = sorted(list(set([x.season for x in games])))
+    records = list()
+    for season in seasons:
+        records.append(GetRecord(school, games, season))
+    return render(request, 'school.html', {
+        'team': team,
+        'conference': conference,
+        'conference_id': conference_id,
+        'colors': SchoolColors(school),
+        'records': records
+    })
+
+def school_season_page(request, school, season):
+    team = Team.objects.get(id=school)
+    conference, conference_id = GetConferenceData(school, season)
+    lines = GameLine.objects.filter(team_id=school, season=season)
+    playerIds = set([x.player_id for x in lines])
+    playerStats = list()
+    for id in playerIds:
+        player = Player.objects.get(id=id)
+        playerStats.append(PlayerStatsSeason(player, season))
+    return render(request, 'school-season.html', {
+        'team': team,
+        'conference': conference,
+        'conference_id': conference_id,
+        'colors': SchoolColors(school),
+        'player_stats': playerStats
+    })
+
 def player_page(request, player_id):
     player = Player.objects.get(id=player_id)
-    stats = PlayerStats(player)
     lines = GameLine.objects.filter(player_id=player.id)
-    return render(request, 'player.html', {'player': player, 'stats': stats, 'lines': lines})
+    careerStats = PlayerStatsCareer(player)
+    seasons = sorted(list(set([x.season for x in lines])))
+    seasonStats = list()
+    for season in seasons:
+        seasonStats.append(PlayerStatsSeason(player, season))
+    return render(request, 'player.html', {
+        'player': player, 'careerStats': careerStats, 'seasonStats': seasonStats, 'lines': lines})
     
 def conference_page(request, conference):
     conf = Conference.objects.get(abbrv=conference)
     teams = Team.objects.filter(conference=conf.abbrv).order_by('-conf_wins', '-wins')
-    return render(request, 'conference.html', {'conference': conf, 'teams': teams})
-
-#TODO: Add this to db
-class SchoolColors
-    def __init__(self, schoolName):
-        if "-am-" in schoolName or schoolName.endswith("-am"):
-            schoolName = schoolName.replace("-am", "-a&m")
-        if "-at-" in schoolName or schoolName.endswith("-at"):
-            schoolName = schoolName.replace("-at", "-a&t")
-        schoolName = schoolName.title()
-        colors = pd.read_csv("../static/colors.csv")
-        school = colors[colors.School == schoolName]
-        if len(school) == 0:
-            self.Primary = "#FFFFFF"
-            self.Secondary = "#000000"
-        elif school.isnull().values.any():
-            self.Primary = "#FFFFFF"
-            self.Secondary = "#000000"
-        else:
-            self.Primary = school.Primary.item()
-            self.Secondary = school.Secondary.item()
-
-
-class PlayerStats:
-    def __init__(self, player):
-        playerLine = getPlayerLineById(player.id)
-        self.name = player.name
-        self.id = player.id
-        self.lines = GameLine.objects.filter(player_id=player.id)
-        self.MPG = round(playerLine.MPG, 2)
-        self.PPG = round(playerLine.PPG, 2)
-        self.RPG = round(playerLine.RPG, 2)
-        self.APG = round(playerLine.APG, 2)
-        self.SPG = round(playerLine.SPG, 2)
-        self.BPG = round(playerLine.BPG, 2)
-        if playerLine['FG%'] is None:
-            self.FGP = 0.0
-        else:
-            self.FGP = round(playerLine['FG%'], 3)
-        if playerLine['3P%'] is None:
-            self.TPP = 0.0
-        else:
-            self.TPP = round(playerLine['3P%'], 3)
-        if playerLine['FT%'] is None:
-            self.FTP = 0.0
-        else:
-            self.FTP = round(playerLine['FT%'], 3)
-        
+    return render(request, 'conference.html', {'conference': conf, 'teams': teams})      

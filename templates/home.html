@@ -17,8 +17,8 @@
         <tbody>
             {% for game in games %}
                 <tr>
-                    <td><a href="schools/{{game.away.name}}">{{ game.away.name|format_school }}</a></td>
-                    <td><a href="schools/{{game.home.name}}">{{ game.home.name|format_school }}</a></td>
+                    <td><a href="schools/{{game.away.id}}">{{ game.away.name|format_school }}</a></td>
+                    <td><a href="schools/{{game.home.id}}">{{ game.home.name|format_school }}</a></td>
                 </tr>
             {% endfor %}
         </tbody>

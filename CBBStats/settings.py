@@ -60,8 +60,10 @@ WSGI_APPLICATION = 'CBBStats.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database/cbb_18_19.db'),
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': os.path.join(BASE_DIR, "static/db.cnf"),
+        },
     }
 }
 

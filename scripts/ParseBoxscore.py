@@ -6,12 +6,6 @@ import datetime
 from Objects import *
 from SQLFunctions import *
 
-def parseArgs():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-s', dest='start')
-    parser.add_argument('-e', dest='end')
-    return parser.parse_args()
-
 def getGames(date):    
     year, month, day = date.split('-')
     url = "https://www.sports-reference.com/cbb/boxscores/index.cgi?month=" + month + "&day=" + day + "&year=" + year

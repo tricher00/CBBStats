@@ -154,56 +154,9 @@ def insertGame(game):
     return temp[0]
     
 def getPlayerLine(playerName):
-    conn = connectToDb()
-    c = conn.cursor()
-
     playerName = string.capwords(playerName)
-    
-    playerId = getPlayerId(playerName)
-    
-    var = (playerId,)
-    
-    queryList = [
-        "SELECT player.name as Player, ",
-        "team.name as School, "
-        "CAST(Count(*) as float) as Games, ",
-        "SUM(minutes) / CAST(Count(*) as float) as MPG, ",
-        "SUM(pts) / CAST(Count(*) as float) as PPG, ",
-        "SUM(ast) / CAST(Count(*) as float) as APG, ",
-        "SUM(orb) / CAST(Count(*) as float) as ORPG, ",
-        "SUM(drb) / CAST(Count(*) as float) as DRPG, ",
-        "SUM(trb) / CAST(Count(*) as float) as RPG, ",
-        "SUM(stl) / CAST(Count(*) as float) as SPG, ",
-        "SUM(blk) / CAST(Count(*) as float) as BPG, ",
-        "SUM(tov) / CAST(Count(*) as float) as TPG, ",
-        "SUM(coolness) / CAST(Count(*) as float) as CPG, ",
-        "SUM(fg_made) / CAST(SUM(fg_attempt) as float) as 'FG%', ",
-        "SUM(two_made) / CAST(SUM(two_attempt) as float) as '2P%', ",
-        "SUM(three_made) / CAST(SUM(three_attempt) as float) as '3P%', ",
-        "SUM(ft_made) / CAST(SUM(ft_attempt) as float) as 'FT%', ",
-        "SUM(pts) as Points, ",
-        "SUM(ast) as Asists, ",
-        "SUM(orb) as ORB, ",
-        "SUM(drb) as DRB, ",
-        "SUM(trb) as TRB, ",
-        "SUM(coolness) as Coolness ",
-        "FROM game_line ",
-        "INNER JOIN team ON team.id = game_line.team_id ",
-        "INNER JOIN player ON player.id = game_line.player_id WHERE player.id = %s "
-    ]
-    
-    query = ""
-    
-    for x in queryList: query += x
-    
-    c.execute(query, var)
-    temp = c.fetchone()
-    
-    colNames = ['Player', 'School', 'Games', 'MPG', 'PPG', 'APG', 'ORPG', 'DRPG', 'RPG', 'SPG', 'BPG', 'TPG', 'CPG', 'FG%', '2P%', '3P%', 'FT%', 'Points', 'Assists', 'ORB', 'DRB', 'TRB', 'Coolness']
-    
-    conn.close()
-    
-    return pd.Series(temp, colNames)
+    playerId = getPlayerId(playerName)    
+    return getPlayerLineById(playerId)
 
 def getPlayerLineById(playerId):
     conn = connectToDb()
@@ -248,6 +201,57 @@ def getPlayerLineById(playerId):
     temp = c.fetchone()
     
     colNames = ['Player', 'School', 'Games', 'MPG', 'PPG', 'APG', 'ORPG', 'DRPG', 'RPG', 'SPG', 'BPG', 'TPG', 'CPG', 'FG%', '2P%', '3P%', 'FT%', 'Points', 'Assists', 'ORB', 'DRB', 'TRB', 'Coolness']
+    
+    conn.close()
+    
+    return pd.Series(temp, colNames)
+
+def getPlayerLineSeasonById(playerId, season):
+    conn = connectToDb()
+    c = conn.cursor()
+
+    var = (season, playerId)
+    
+    queryList = [
+        "SELECT player.name as Player, ",
+        "team.name as School, "
+        "team.id as School_Id, "
+        "season as Season, ",
+        "CAST(Count(*) as float) as Games, ",
+        "SUM(minutes) / CAST(Count(*) as float) as MPG, ",
+        "SUM(pts) / CAST(Count(*) as float) as PPG, ",
+        "SUM(ast) / CAST(Count(*) as float) as APG, ",
+        "SUM(orb) / CAST(Count(*) as float) as ORPG, ",
+        "SUM(drb) / CAST(Count(*) as float) as DRPG, ",
+        "SUM(trb) / CAST(Count(*) as float) as RPG, ",
+        "SUM(stl) / CAST(Count(*) as float) as SPG, ",
+        "SUM(blk) / CAST(Count(*) as float) as BPG, ",
+        "SUM(tov) / CAST(Count(*) as float) as TPG, ",
+        "SUM(coolness) / CAST(Count(*) as float) as CPG, ",
+        "SUM(fg_made) / CAST(SUM(fg_attempt) as float) as 'FG%', ",
+        "SUM(two_made) / CAST(SUM(two_attempt) as float) as '2P%', ",
+        "SUM(three_made) / CAST(SUM(three_attempt) as float) as '3P%', ",
+        "SUM(ft_made) / CAST(SUM(ft_attempt) as float) as 'FT%', ",
+        "SUM(pts) as Points, ",
+        "SUM(ast) as Assists, ",
+        "SUM(orb) as ORB, ",
+        "SUM(drb) as DRB, ",
+        "SUM(trb) as TRB, ",
+        "SUM(coolness) as Coolness ",
+        "FROM game_line ",
+        "INNER JOIN team ON team.id = game_line.team_id ",
+        "INNER JOIN player ON player.id = game_line.player_id ",
+        "WHERE season = %s AND player.id = %s"
+    ]
+    
+    query = ""
+    
+    for x in queryList: query += x
+    
+    c.execute(query, var)
+    temp = c.fetchone()
+    
+    colNames = ['Player', 'School', 'School_Id', 'Season', 'Games', 'MPG', 'PPG', 'APG', 'ORPG', 'DRPG', 'RPG', 'SPG', 'BPG', 'TPG', 'CPG', 'FG%', '2P%', '3P%', 'FT%', 'Points', 'Assists', 'ORB', 'DRB', 'TRB', 'Coolness']
     
     conn.close()
     

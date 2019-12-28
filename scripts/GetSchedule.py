@@ -25,15 +25,15 @@ def getGames(date):
         try:
             homeLink = homeTag['href']
             search = re.search(regex, homeLink)
-            home = Team(search.group(1))
+            home = Team(homeTag.get_text(), search.group(1))
         except:
-            home = Team(homeTag.get_text().replace(' ', '-').lower())
+            home = Team(homeTag.get_text(), homeTag.get_text().replace(' ', '-').lower())
         try:
             awayLink = awayTag['href']
             search = re.search(regex, awayLink)
-            away = Team(search.group(1))
+            away = Team(awayTag.get_text(), search.group(1))
         except:
-            away = Team(awayTag.get_text().replace(' ', '-').lower())
+            away = Team(awayTag.get_text(), awayTag.get_text().replace(' ', '-').lower())
 
         for ch in ['\'', '(', ')']:
             if ch in home.name: home.name = home.name.replace(ch, '')
