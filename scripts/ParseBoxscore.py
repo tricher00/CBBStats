@@ -67,9 +67,11 @@ def getBox(html, game, date):
         test = html.find('table', id='box-score-basic-' + team.id)
         if team.isHome: 
             opponent = game.away.name
+            opponentId = game.away.id
             location = 'Home'
         else: 
             opponent = game.home.name
+            opponentId = game.home.id
             location = 'Away'
         try:
             test.select("thead th")
@@ -79,10 +81,10 @@ def getBox(html, game, date):
         
         headers = test.select("thead th")
         headers = headers[2:]
-        colHeads = ['Date', 'Team', 'Opponent', 'Location', 'id']
+        colHeads = ['Date', 'Team', 'Team_Id', 'Opponent', 'Opponent_Id', 'Location', 'id']
         for h in headers: colHeads.append(h.get_text())
         colHeads = [h for h in colHeads]
-        colHeads[5] = 'Name'
+        colHeads[7] = 'Name'
         colHeads.append('Coolness')
         for percent in ['FG%', '2P%', '3P%', 'FT%']: 
             colHeads.remove(percent)
@@ -97,7 +99,7 @@ def getBox(html, game, date):
                 continue
             else:
                 id = row.select("th")[0].select_one("a")['href'].replace("/cbb/players/", "").replace(".html", "").lower()
-            line = [datetime.datetime.strptime(date, "%Y-%m-%d").date(), team.name , opponent, location, name, id]
+            line = [datetime.datetime.strptime(date, "%Y-%m-%d").date(), team.name, team.id, opponent, opponentId, location, name, id]
             data = row.select('td')
             for x in data:
                 if not '_pct' in x['data-stat']:

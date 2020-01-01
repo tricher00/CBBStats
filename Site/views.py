@@ -42,6 +42,7 @@ def school_season_page(request, school, season):
         playerStats.append(PlayerStatsSeason(player, season))
     return render(request, 'school-season.html', {
         'team': team,
+        'season': season,
         'conference': conference,
         'conference_id': conference_id,
         'colors': SchoolColors(school),

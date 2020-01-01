@@ -94,9 +94,9 @@ def AddTeamsToDb(teams):
     conn = connectToDb()
     c = conn.cursor()
     for team in teams:
-        var = (team.name,)
+        var = (team.id,)
         
-        c.execute("SELECT id FROM team WHERE name = %s", var)
+        c.execute("SELECT id FROM team WHERE id = %s", var)
         
         temp = c.fetchone()
         
@@ -110,10 +110,10 @@ def insertGameLine(line, gameId, season):
     conn = connectToDb()
     c = conn.cursor()
     
-    date, team, opponent, location, player, id, mins, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness = line
+    date, team, teamId, opponent, opponentId, location, player, id, mins, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness = line
     
-    teamId = getTeamId(team)
-    opponentId = getTeamId(opponent)
+    #teamId = getTeamId(team)
+    #opponentId = getTeamId(opponent)
     insertPlayer(id, player)
     
     var = (gameId, date, season, id, teamId, opponentId, location, mins, fg_made, fg_attempt, two_made, two_attempt, three_made, three_attempt, ft_made, ft_attempt, orb, drb, trb, ast, stl, blk, tov, pf, pts, coolness)

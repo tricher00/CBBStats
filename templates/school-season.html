@@ -1,16 +1,13 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
 {% load format_school %}
 {% load format_conference %}
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>{{ team.name|format_school }}</title>
-  </head>
-  <body>
+{% block title %}
+{{ team.name|format_school }} | {{ season }}
+{% endblock %}
+{% block content %}
     <h1><a href='../{{ team.id }}'>{{ team.name|format_school }}</a> | <a href="../../conferences/{{conference_id}}">{{ conference }}</a></h1>
-  </body>
-  <table>
-        <thead>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
             <tr>
                 <th>Player</th>
                 <th>Games</th>
@@ -42,5 +39,5 @@
                 </tr>
             {% endfor %}
         </tbody>
-  </table>
-</html>
+    </table>
+{% endblock %}
